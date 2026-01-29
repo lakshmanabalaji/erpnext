@@ -65,6 +65,7 @@ class PurchaseOrderItem(Document):
 		parent: DF.Data
 		parentfield: DF.Data
 		parenttype: DF.Data
+		po_remarks: DF.Data | None
 		price_list_rate: DF.Currency
 		pricing_rules: DF.SmallText | None
 		product_bundle: DF.Link | None
@@ -80,7 +81,7 @@ class PurchaseOrderItem(Document):
 		sales_order: DF.Link | None
 		sales_order_item: DF.Data | None
 		sales_order_packed_item: DF.Data | None
-		schedule_date: DF.Date
+		schedule_date: DF.Date | None
 		stock_qty: DF.Float
 		stock_uom: DF.Link
 		stock_uom_rate: DF.Currency

@@ -712,18 +712,22 @@ class JobCard(Document):
 			flt(self.total_completed_qty, precision) + flt(self.process_loss_qty, precision)
 		)
 
-		if self.for_quantity and flt(total_completed_qty, precision) != flt(self.for_quantity, precision):
-			total_completed_qty_label = bold(_("Total Completed Qty"))
-			qty_to_manufacture = bold(_("Qty to Manufacture"))
+		allowance_percentage = flt(
+			frappe.db.get_single_value("Manufacturing Settings", "overproduction_percentage_for_work_order")
+		)
+		if allowance_percentage == 0:
+			if self.for_quantity and flt(total_completed_qty, precision) != flt(self.for_quantity, precision):
+				total_completed_qty_label = bold(_("Total Completed Qty"))
+				qty_to_manufacture = bold(_("Qty to Manufacture"))
 
-			frappe.throw(
-				_("The {0} ({1}) must be equal to {2} ({3})").format(
-					total_completed_qty_label,
-					bold(flt(total_completed_qty, precision)),
-					qty_to_manufacture,
-					bold(self.for_quantity),
+				frappe.throw(
+					_("The {0} ({1}) must be equal to {2} ({3})").format(
+						total_completed_qty_label,
+						bold(flt(total_completed_qty, precision)),
+						qty_to_manufacture,
+						bold(self.for_quantity),
+					)
 				)
-			)
 
 	def set_expected_and_actual_time(self):
 		for child_table, start_field, end_field, time_required in [
@@ -755,10 +759,10 @@ class JobCard(Document):
 		precision = self.precision("total_completed_qty")
 
 		self.process_loss_qty = 0.0
-		if self.total_completed_qty and self.for_quantity > self.total_completed_qty:
-			self.process_loss_qty = flt(self.for_quantity, precision) - flt(
-				self.total_completed_qty, precision
-			)
+		# if self.total_completed_qty and self.for_quantity > self.total_completed_qty:
+		# 	self.process_loss_qty = flt(self.for_quantity, precision) - flt(
+		# 		self.total_completed_qty, precision
+		# 	)
 
 	def update_work_order(self):
 		if not self.work_order:
