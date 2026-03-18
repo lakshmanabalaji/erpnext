@@ -78,10 +78,10 @@ class Analytics:
 				"options": self.filters.tree_type if self.filters.tree_type != "Order Type" else "",
 				"fieldname": "entity",
 				"fieldtype": "Link" if self.filters.tree_type != "Order Type" else "Data",
-				"width": 140 if self.filters.tree_type != "Order Type" else 200,
+				"width": 300 if self.filters.tree_type != "Order Type" else 300,
 			}
 		]
-		if self.filters.tree_type in ["Customer", "Supplier", "Item"]:
+		if self.filters.tree_type in ["Supplier", "Item"]:
 			self.columns.append(
 				{
 					"label": _(self.filters.tree_type + " Name"),
